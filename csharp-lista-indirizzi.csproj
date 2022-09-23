@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\..\..\Downloads\addresses.csv" Link="addresses.csv" />
+    <None Include="..\..\..\..\Downloads\addresses.csv" Link="addresses.csv" />
   </ItemGroup>
 
 </Project>

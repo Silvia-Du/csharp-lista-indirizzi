@@ -62,7 +62,7 @@ while (!addressFile.EndOfStream)
     }
     catch (IndexOutOfRangeException)
     {
-        Console.WriteLine("Riferimento a indice array errato");
+        Console.WriteLine("Riferimento a indice array errato" );
     }
 
 }

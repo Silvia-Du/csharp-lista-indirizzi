@@ -60,9 +60,9 @@ while (!addressFile.EndOfStream)
         //aggiungo gli indirizzi alla lista
         addressesCollection.Add(newAddress);
     }
-    catch (Exception e)
+    catch (IndexOutOfRangeException)
     {
-        Console.WriteLine(e.Message);
+        Console.WriteLine("Riferimento a indice array errato");
     }
 
 }

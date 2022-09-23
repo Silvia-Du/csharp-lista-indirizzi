@@ -12,54 +12,57 @@ Console.WriteLine("Hello, World!");
  * */
 
 
-//creo la lista
-List<Address> addresses = new List<Address>();
 
-//leggo il file 
-//FileStream file = File.Open("./addresses.csv", FileMode.Open);
 
 StreamReader addressFile = File.OpenText("../../../addresses.csv");
-
-
 //tolgo la prima riga
 addressFile.ReadLine();
-//Name,Surname,Street,City,Province,ZIP
-//while (!File.EndOfStream)
+
+//creo la lista
+List<Address> addressesCollection = new List<Address>();
+
 while (!addressFile.EndOfStream)
 {
     string line = addressFile.ReadLine();
     string[] rowSplit = line.Split(',');
     string secondSurname = null;
-    string province;
+    
 
     int last = rowSplit.Count() - 1;    
     string[] string2 =  rowSplit[2].Trim().Split(' ');
 
     // assegno parametri obblig per il costruttore
-    string name = rowSplit[0] == "" ? "-" : rowSplit[0];
-    string surname = rowSplit[1];
+    string name = rowSplit[0] == "" ? "Nome non indicato" : rowSplit[0];
+    string surname =rowSplit.Count() > 5? rowSplit[1] : "cognome non indicato";
 
     //creo nuova istanza di address
     Address newAddress = new Address(name , surname);
+
+    //gestione altri paramentri
+    string street = rowSplit.Count() > 4 && rowSplit[2] != "" ? rowSplit[2] : "non indicata";
+    string city = rowSplit[last-2];
+    string province = rowSplit[last - 1].Trim();
+    string zip = rowSplit[last].Trim().Count() > 5 ? "invalid zip" : rowSplit[last].Trim();
 
     //gestione secondo cognome
     if (rowSplit.Count() > 6 && rowSplit[2].Trim().Count() != 2 && string2.Count() == 1)
     {
         secondSurname = rowSplit[2];
+        street = rowSplit[3];
+
     }
     newAddress.SecondSurname = secondSurname != null ? secondSurname : "";
-
-
-    //gestione altri paramentri
-    string street = rowSplit[2] == ""? "-": rowSplit[2];
-    string city = rowSplit[3];
-    province = rowSplit[last-1].Trim();
-    string zip = rowSplit[last].Trim().Count() >5? "invalid": rowSplit[last].Trim();
-
+    //assegno gli altri parametri di Address
     newAddress.CompleteData(street, city, province, zip);
 
+    //stampo gli indirizzi
+    addressesCollection.Add(newAddress);
 
-    Console.WriteLine(zip);
+}
+
+foreach (Address address in addressesCollection)
+{
+    Address.AddressPrinter(address);
 
 }
 
@@ -95,6 +98,19 @@ public class Address
         {
             Console.WriteLine(e.Message);
         }
+    }
+
+    public static void AddressPrinter(Address address)
+    {
+        Console.WriteLine("---------");
+        Console.Write($"Nome: {address.Name}, Cognome: {address.Surname}; \n");
+        if(address.SecondSurname != "")
+        {
+            Console.Write($"secondo cognome: {address.SecondSurname};");
+        }
+        Console.WriteLine($"via: {address.Street}; città:{address.City}\nProvincia: {address.Province}, {address.ZIP}");
+        Console.WriteLine("---------");
+
     }
 
 
